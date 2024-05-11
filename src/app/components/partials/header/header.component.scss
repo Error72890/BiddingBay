@@ -1,0 +1,31 @@
+.fake-nav-1, .fake-nav-2 {
+    background-color: var(--primary-color) !important;
+}
+
+.box2-heart-fill{
+    color: var(--light-color);
+}
+
+.nav-link {
+    color: var(--light-color) !important;
+}
+
+.navbar-toggler {
+    background-color: var(--light-color) !important;
+}
+
+.door-closed:hover + .door-open {
+    display: inline !important;
+}
+
+.door-open:hover {
+    display: none !important;
+}
+
+.door-closed:hover {
+    display: none !important;
+}
+
+b, .icon{
+    color: var(--light-color);
+}

@@ -1,1 +1,61 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+    //Color
+    --primary-color: #4CAF50; /* Green */
+    --secondary-color: #FFC107; /* Amber */
+    --text-color: #212121; /* Dark Gray */
+    --light-color: #FAFAFA; /* Light Gray */
+    --dark-color: #424242; /* Dark Slate Gray */
+    --clear-color: #E0E0E0; /* Lighter Gray */
+
+    //Font weight
+    //Montserrat { 300, 400, 600 }
+    //Roboto { 300, 400, 500 }
+    --thin-weight: 300;
+    --regular-weight: 400;
+    --medium-weight: 500;
+    --semi-bold-weight: 600;
+}
+
+body {
+    overflow-x: hidden;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+}
+
+.page-content {
+    min-height:80vh;
+    margin: 0rem 2rem;
+}
+
+h1,
+h2,
+h3 {
+    font-family: 'Montserrat';
+    font-weight: var(--semi-bold-weight);
+}
+
+p,
+div,
+label,
+a {
+    font-family: 'Roboto';
+}
+
+p{
+    margin: initial;
+}
+
+a {
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+input {
+    padding: 0.75rem !important;
+}
+
+.cdk-overlay-container {
+    display: none !important;
+}

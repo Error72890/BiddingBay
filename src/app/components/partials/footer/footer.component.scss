@@ -1,0 +1,10 @@
+footer{
+    position: sticky;
+    width: 100vw;
+    bottom: 0;
+    background-color: var(--text-color);
+    min-height:10vh;
+}
+.text-center, .nav-link{
+    color: var(--light-color);
+}
