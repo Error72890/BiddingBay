@@ -6,12 +6,16 @@
     color: var(--light-color);
 }
 
+.form-control{
+    border: 0;
+}
+
 .nav-link {
-    color: var(--light-color) !important;
+    color: var(--clear-color) !important;
 }
 
 .navbar-toggler {
-    background-color: var(--light-color) !important;
+    background-color: var(--clear-color) !important;
 }
 
 .door-closed:hover + .door-open {
@@ -27,5 +31,5 @@
 }
 
 b, .icon{
-    color: var(--light-color);
+    color: var(--clear-color);
 }

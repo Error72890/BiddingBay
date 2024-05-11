@@ -16,6 +16,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { AuctionCreatorComponent } from './components/auction-creator/auction-creator.component';
 import { CategoriesComponent } from './components/categories/categories.component';
 import { AuctionCardComponent } from './components/partials/auction-card/auction-card.component';
+import { AlertCardComponent } from './components/partials/alert-card/alert-card.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { AuctionCardComponent } from './components/partials/auction-card/auction
     AuctionCreatorComponent,
     CategoriesComponent,
     AuctionCardComponent,
+    AlertCardComponent,
   ],
   imports: [
     BrowserModule,

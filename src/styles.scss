@@ -4,9 +4,9 @@
     --primary-color: #4CAF50; /* Green */
     --secondary-color: #FFC107; /* Amber */
     --text-color: #212121; /* Dark Gray */
-    --light-color: #FAFAFA; /* Light Gray */
+    --light-color: #eae9e9; /* Light Gray */
     --dark-color: #424242; /* Dark Slate Gray */
-    --clear-color: #E0E0E0; /* Lighter Gray */
+    --clear-color: #FAFAFA; /* Lighter Gray */
 
     //Font weight
     //Montserrat { 300, 400, 600 }
@@ -22,6 +22,7 @@ body {
     width: 100vw;
     margin: 0;
     padding: 0;
+    background-color: var(--light-color);
 }
 
 .page-content {
@@ -48,7 +49,7 @@ p{
 }
 
 a {
-    color: var(--primary-color);
+    color: var(--text-color);
     cursor: pointer;
 }
 
