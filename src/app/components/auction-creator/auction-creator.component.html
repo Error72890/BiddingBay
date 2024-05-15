@@ -1,3 +1,19 @@
 <div class="page-content">
+    <div class="file-upload mt-4 card">
+        <button class="file-upload-btn" type="button" (click)="triggerFileInput()">Add Image</button>
     
+        <div class="image-upload-wrap">
+            <input class="file-upload-input" #fileInput type='file' (change)="readURL(fileInput)" accept="image/*" />
+            <div class="drag-text">
+                <h3>Drag and drop a file or select add Image</h3>
+            </div>
+        </div>
+        <div class="file-upload-content" *ngIf="imageSrc">
+            <img class="file-upload-image" [src]="imageSrc" alt="your image" />
+            <div class="image-title-wrap">
+                <button type="button" (click)="removeUpload()" class="remove-image">Remove <span
+                        class="image-title">{{ imageName }}</span></button>
+            </div>
+        </div>
+    </div>
 </div>
