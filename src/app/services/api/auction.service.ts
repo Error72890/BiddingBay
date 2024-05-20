@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class AuctionService {
     return this.http.post(`${this.API_URL}/add`, body, { headers });
   }
 
-  getAuctionList() {
+  getAuctionList() : Observable<any> {
 
     const headers = new HttpHeaders({
       'Authorization': this.TOKEN,
@@ -30,7 +31,7 @@ export class AuctionService {
     return this.http.get(`${this.API_URL}/get-all`, { headers });
   }
 
-  getAuctionById(auctionId: number) {
+  getAuctionById(auctionId: number) : Observable<any> {
 
     const headers = new HttpHeaders({
       'Authorization': this.TOKEN,

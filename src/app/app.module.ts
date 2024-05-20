@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxBootstrapIconsModule, allIcons } from 'ngx-bootstrap-icons';
+import { HttpClientModule } from '@angular/common/http';
+
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +20,7 @@ import { AuctionCreatorComponent } from './components/auction-creator/auction-cr
 import { CategoriesComponent } from './components/categories/categories.component';
 import { AuctionCardComponent } from './components/partials/auction-card/auction-card.component';
 import { AlertCardComponent } from './components/partials/alert-card/alert-card.component';
+import { HttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -38,7 +42,8 @@ import { AlertCardComponent } from './components/partials/alert-card/alert-card.
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgxBootstrapIconsModule.pick(allIcons)
+    NgxBootstrapIconsModule.pick(allIcons),
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,34 +1,64 @@
 <div class="page-content">
-    <h2 class="h3 mt-4">Bidding Details</h2>
-    <div class="card auction-details">
-        <h2>Auction Title: <span id="auction-title">Title of the auction</span></h2>
-        <p>Item Description: <span id="item-description">Description of the item</span></p>
-        <p>Current Bid: <span id="current-bid">Current highest bid</span></p>
-        <p>Highest Bidder: <span id="highest-bidder">Address of highest bidder</span></p>
-        <p>Remaining Time: <span id="remaining-time">Time left for bidding</span></p>
+  <div *ngIf="loading">Cargando detalles de la subasta...</div>
+
+  <div *ngIf="error">
+    La subasta no existe o ha expirado.
+    <button (click)="redirectToHome()">Volver a la página principal</button>
+  </div>
+
+  <div *ngIf="!loading && !error">
+    <h2 class="h3 mt-4">Detalles de la subasta</h2>
+    <div class="card auction-details" *ngIf="auction">
+        <img *ngIf="imageUrl" [src]="imageUrl" alt="Admin" class="rounded object-fit-cover" width="200px" height="200px">
+      <h2>
+       <span id="auction-title">{{ auction.objectName }}</span>
+      </h2>
+      <p>
+        Descripción:
+        <span id="item-description">{{ auction.description }}</span>
+      </p>
+      <p>
+        Apuesta actual:
+        <span id="current-bid"
+          >${{ auction.currentMaxBid.toLocaleString() }}</span
+        >
+      </p>
+      <p>
+        Highest Bidder:
+        <span id="highest-bidder">{{ auction.highestBidder }}</span>
+      </p>
+      <p>
+        Remaining Time:
+        <span id="remaining-time">{{remainingTime}}</span>
+      </p>
     </div>
     <div class="bidding-history">
-        <h2>Bidding History</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Bidder Address</th>
-                    <th>Bid Amount</th>
-                </tr>
-            </thead>
-            <tbody id="bidding-history-body">
-                <!-- Bidding history rows will be dynamically added here -->
-            </tbody>
-        </table>
+      <h2>Bidding History</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Bidder Address</th>
+            <th>Bid Amount</th>
+          </tr>
+        </thead>
+        <tbody id="bidding-history-body">
+          <!-- Suponiendo que la respuesta incluye un historial de pujas -->
+          <tr *ngFor="let bid of auction.biddingHistory">
+            <td>{{ bid.bidderAddress }}</td>
+            <td>${{ bid.bidAmount.toLocaleString() }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="place-bid">
-        <h2>Place Your Bid</h2>
-        <form id="bid-form">
-            <label for="your-address">Your ETH Address:</label>
-            <input type="text" id="your-address" name="your-address" required>
-            <label for="bid-amount">Your Bid Amount:</label>
-            <input type="text" id="bid-amount" name="bid-amount" required>
-            <button type="submit">Submit Bid</button>
-        </form>
+      <h2>Place Your Bid</h2>
+      <form id="bid-form">
+        <label for="your-address">Your ETH Address:</label>
+        <input type="text" id="your-address" name="your-address" required />
+        <label for="bid-amount">Your Bid Amount:</label>
+        <input type="text" id="bid-amount" name="bid-amount" required />
+        <button type="submit">Submit Bid</button>
+      </form>
     </div>
+  </div>
 </div>

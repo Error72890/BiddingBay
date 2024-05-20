@@ -16,6 +16,7 @@ const routes: Routes = [
   { path: 'authentication', component: AuthenticationComponent },
   { path: 'auction-list', component: AuctionListComponent },
   { path: 'auction-details', component: AuctionDetailComponent },
+  { path: 'auction-details/:auctionId', component: AuctionDetailComponent },
   { path: 'user-profile', component: UserProfileComponent },
   { path: 'categories', component: CategoriesComponent },
   { path: 'history', component: HistoryComponent },

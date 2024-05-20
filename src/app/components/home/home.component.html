@@ -47,19 +47,9 @@
                         </div>
                     </a>
                 </div>  
-                <h2 class="h3 mt-3">Subastas más populares</h2>
-                <div class="row gutters-sm">
-                    <app-auction-card class="col-sm-6 col-lg-3 mb-3"></app-auction-card>
-                    <app-auction-card class="col-sm-6 col-lg-3 mb-3"></app-auction-card>
-                    <app-auction-card class="col-sm-6 col-lg-3 mb-3"></app-auction-card>
-                    <app-auction-card class="col-sm-6 col-lg-3 mb-3"></app-auction-card>
-                </div>  
-                <h2 class="h3 mt-3">Basado en tus busquedas recientes</h2>
-                <div class="row gutters-sm">
-                    <app-auction-card class="col-sm-6 col-lg-3 mb-3"></app-auction-card>
-                    <app-auction-card class="col-sm-6 col-lg-3 mb-3"></app-auction-card>
-                    <app-auction-card class="col-sm-6 col-lg-3 mb-3"></app-auction-card>
-                    <app-auction-card class="col-sm-6 col-lg-3 mb-3"></app-auction-card>
+                <h2 class="h3 mt-3">Subastas</h2>
+                <div  class="row gutters-sm">
+                    <app-auction-card *ngFor="let auction of auctions" class="col-sm-6 col-lg-3 mb-3" [auction]="auction"></app-auction-card>
                 </div>  
             </div>
         </div>
