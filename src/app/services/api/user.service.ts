@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,7 @@ export class UserService {
     return this.http.get(`${this.API_URL}/get-all`, { headers });
   }
 
-  getUserById(userId: number) {
+  getUserById(userId: number) : Observable<any> {
 
     const headers = new HttpHeaders({
       'Authorization': this.TOKEN,

@@ -19,6 +19,7 @@ const routes: Routes = [
   { path: 'auction-list', component: AuctionListComponent },
   { path: 'auction-details', component: AuctionDetailComponent },
   { path: 'auction-details/:auctionId', component: AuctionDetailComponent },
+  { path: 'auction-list/:category', component: AuctionListComponent },
   { path: 'user-profile', canActivate: [SessionGuard], component: UserProfileComponent },
   { path: 'categories', component: CategoriesComponent },
   { path: 'history', canActivate: [SessionGuard], component: HistoryComponent },

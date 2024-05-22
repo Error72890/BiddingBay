@@ -21,9 +21,10 @@
                 <ul class="navbar-nav flex-row" *ngIf="userId">
                     <li class="nav-item me-4">
                         <a class="nav-link d-sm-flex align-items-sm-center" href="/user-profile">
-                            <img src="https://ew.com/thmb/hCQO2_ETsK--fb_HzBOCQNM0F-4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/james-murray-1-2000-63baf85a56984bd7a9846947a9e0f585.jpg"
-                                class="rounded-circle" height="30vh" alt="user-img" loading="lazy" />
-                            <strong class="d-none d-sm-block ms-1">Jeff Bezos</strong>
+                            <div class="user-image">
+                                {{userName.charAt(0) + userName.charAt(userName.indexOf(' ')+1)}}
+                            </div>
+                            <strong class="d-none d-sm-block ms-1">{{userName}}</strong>
                         </a>
                     </li>
 

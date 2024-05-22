@@ -7,10 +7,11 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex flex-column align-items-center text-center">
-                                <img src="https://ew.com/thmb/hCQO2_ETsK--fb_HzBOCQNM0F-4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/james-murray-1-2000-63baf85a56984bd7a9846947a9e0f585.jpg" alt="Admin"
-                                    class="rounded-circle" width="150">
+                               <div class="user-image">
+                                {{userInfo.fullName.charAt(0) + userInfo.fullName.charAt(userInfo.fullName.indexOf(' ')+1)}}
+                               </div>
                                 <div class="mt-3">
-                                    <h4>Jeff Bezos</h4>
+                                    <h4>{{userInfo.fullName}}</h4>
                                     <button class="btn btn-outline-primary">Enviar mensaje</button>
                                 </div>
                             </div>
@@ -25,7 +26,7 @@
                                     <h6 class="mb-0">Nombre completo</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    Jeff Bezos
+                                    {{userInfo.fullName}}
                                 </div>
                             </div>
                             <hr>
@@ -34,7 +35,7 @@
                                     <h6 class="mb-0">Email</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    12345@gmail.com
+                                    {{userInfo.email}}
                                 </div>
                             </div>
                             <hr>
@@ -43,7 +44,7 @@
                                     <h6 class="mb-0">Telefono</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    (+52) 999-999-9999
+                                    {{userInfo.phoneNumber}}
                                 </div>
                             </div>
                             <hr>
@@ -52,7 +53,7 @@
                                     <h6 class="mb-0">Dirección</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
-                                    Calle 23 #999, entre 23 y 34
+                                    {{userInfo.adress}}
                                 </div>
                             </div>
                             <hr>
@@ -67,10 +68,7 @@
                 
                 <h2>Historial de subastas</h2>
                 <div class="row gutters-sm">
-                    <app-auction-card class="col-sm-6 col-lg-4 mb-3"></app-auction-card>
-                    <app-auction-card class="col-sm-6 col-lg-4 mb-3"></app-auction-card>
-                    <app-auction-card class="col-sm-6 col-lg-4 mb-3"></app-auction-card>
-                    <app-auction-card class="col-sm-6 col-lg-4 mb-3"></app-auction-card>
+                    <p>TODO (OR NOT)</p>
                 </div>  
             </div>
         </div>

@@ -31,6 +31,15 @@ export class AuctionService {
     return this.http.get(`${this.API_URL}/get-all`, { headers });
   }
 
+  getAuctionsByCategory(category: string): Observable<any> {
+      
+      const headers = new HttpHeaders({
+        'Authorization': this.TOKEN,
+      });
+  
+      return this.http.get(`${this.API_URL}/get-by-category/${category}`, { headers });
+   }
+
   getAuctionById(auctionId: number) : Observable<any> {
 
     const headers = new HttpHeaders({

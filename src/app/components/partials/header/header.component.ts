@@ -11,6 +11,7 @@ import { SessionGuard } from 'src/app/guards/session.guard';
 export class HeaderComponent {
 
   userId: number = 0;
+  userName: string = 'Nombre';
   userSesion: string | null = localStorage.getItem('token');
 
   constructor(private sessionGuard: SessionGuard, private router: Router, private route: ActivatedRoute) {
@@ -20,6 +21,7 @@ export class HeaderComponent {
     this.router.events.subscribe(async event => {
       if (event instanceof NavigationEnd) {
         this.userId = parseInt(localStorage.getItem('userId')!);
+        this.userName = localStorage.getItem('userName')!;
       }
     });
   }

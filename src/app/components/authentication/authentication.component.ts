@@ -27,6 +27,7 @@ export class AuthenticationComponent implements OnInit {
    */
   ngOnInit() {
 
+    localStorage.removeItem('userName');
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
 
@@ -56,8 +57,10 @@ export class AuthenticationComponent implements OnInit {
         if (response.ok == true) {
           const userId = response.userId;
           const token = response.token;
+          const userName = response.userName;
 
           localStorage.setItem('userId', userId);
+          localStorage.setItem('userName', userName);
           localStorage.setItem('token', token);
 
           this.router.navigate(['/home']);

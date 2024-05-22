@@ -9,6 +9,8 @@ import { AuctionService } from 'src/app/services/api/auction.service';
 export class HomeComponent implements OnInit {
 
   auctions: any[] = [];
+  filterSearch = '';
+  filteredAuctions: any[] = [];
 
   constructor(private auctionService: AuctionService) { 
 
@@ -21,6 +23,13 @@ export class HomeComponent implements OnInit {
   getAuctions() {
     this.auctionService.getAuctionList().subscribe((response) => {
       this.auctions = response.auctions;
+      this.filteredAuctions = [...this.auctions]; // mostrar todas las subastas al inicio
     });
+  }
+
+  filterAuctions(searchValue: string) {
+    this.filteredAuctions = this.auctions.filter((auction) =>
+      auction.objectName.toLowerCase().includes(searchValue.toLowerCase())
+    );
   }
 }

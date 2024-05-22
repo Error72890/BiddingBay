@@ -33,6 +33,7 @@ export class SessionGuard {
     logout(): void {
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
+        localStorage.removeItem('userName');
 
         this.router.navigate(['/logout']);
     }
