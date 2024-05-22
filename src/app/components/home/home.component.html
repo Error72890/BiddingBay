@@ -41,7 +41,7 @@
                     </a>
                 </div>  
                 <h2 class="h3 mt-3">Subastas</h2>
-                <input type="text" [(ngModel)]="filterSearch" (ngModelChange)="filterAuctions(filterSearch)">                
+                <input type="text" class="mb-4" placeholder="Buscar artículos..." [(ngModel)]="filterSearch" (ngModelChange)="filterAuctions(filterSearch)">                
                 <div class="row gutters-sm">
                     <app-auction-card *ngFor="let auction of filteredAuctions" class="col-sm-6 col-lg-3 mb-3" [auction]="auction"></app-auction-card>
                 </div>  
