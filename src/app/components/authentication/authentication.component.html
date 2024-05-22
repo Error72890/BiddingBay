@@ -1,3 +1,32 @@
 <div class="page-content">
-    
+    <div class="formMainBox" *ngIf="showLoginForm"> 
+        <img class="user" src="https://i.ibb.co/yVGxFPR/2.png" height="100px" width="100px">
+        <h3>Iniciar sesion</h3>
+        <form (ngSubmit)="login()" [formGroup]="userDataFormItem">
+            <div class="inputBox"> 
+                <input type="text" placeholder="Correo electrónico" class="form-control" formControlName="email" [(ngModel)]="userData.email" required> 
+                <input type="password" placeholder="Contraseña" class="form-control" formControlName="password" [(ngModel)]="userData.password" required> 
+            </div> 
+            <div *ngIf="invalidData" class="alert alert-danger mt-1 pt-1 pb-1 d-flex justify-content-center">
+                Datos de cuenta incorrectos.
+            </div>
+            <input type="submit" name="" value="Entrar" [disabled]="userDataFormItem.invalid">
+        </form>
+        <div class="text-center">
+            <p style="color: var(--text-color)">¿No tienes cuenta? <a (click)="changeMode(false)">Crea una cuenta</a></p>
+        </div>
+    </div>
+    <div class="formMainBox" *ngIf="!showLoginForm"> 
+        <h3>Registrarse</h3>
+        <form >
+            <div class="inputBox"> 
+                <input id="uname" type="text" name="Username" placeholder="Correo electrónico"> 
+                <input id="pass" type="password" name="Password" placeholder="Contraseña"> 
+            </div> 
+            <input type="submit" name="" value="Entrar">
+        </form>
+        <div class="text-center">
+            <p style="color: var(--text-color)">¿Ya tienes cuenta? <a (click)="changeMode(true)">Inicia sesión</a></p>
+        </div>
+    </div>
 </div>

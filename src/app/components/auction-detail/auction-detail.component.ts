@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuctionService } from 'src/app/services/api/auction.service';
+import { SessionGuard } from 'src/app/guards/session.guard';
 
 @Component({
   selector: 'app-auction-detail',
   templateUrl: './auction-detail.component.html',
-  styleUrls: ['./auction-detail.component.scss']
+  styleUrls: ['./auction-detail.component.scss'],
+  providers: [SessionGuard]
 })
 export class AuctionDetailComponent implements OnInit {
   auction: any;

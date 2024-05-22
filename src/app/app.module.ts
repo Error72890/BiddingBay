@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NgxBootstrapIconsModule, allIcons } from 'ngx-bootstrap-icons';
 import { HttpClientModule } from '@angular/common/http';
-
-
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,7 +20,7 @@ import { AuctionCreatorComponent } from './components/auction-creator/auction-cr
 import { CategoriesComponent } from './components/categories/categories.component';
 import { AuctionCardComponent } from './components/partials/auction-card/auction-card.component';
 import { AlertCardComponent } from './components/partials/alert-card/alert-card.component';
-import { HttpClient } from '@angular/common/http';
+import { SessionGuard } from './guards/session.guard';
 
 @NgModule({
   declarations: [
@@ -41,11 +41,13 @@ import { HttpClient } from '@angular/common/http';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     NgxBootstrapIconsModule.pick(allIcons),
     HttpClientModule,
   ],
-  providers: [],
+  providers: [SessionGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

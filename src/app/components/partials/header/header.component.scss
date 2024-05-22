@@ -18,16 +18,11 @@
     background-color: var(--clear-color) !important;
 }
 
-.door-closed:hover + .door-open {
+.login-btn:hover .door-closed{
+    display: none !important;
+}
+.login-btn:hover .door-open{
     display: inline !important;
-}
-
-.door-open:hover {
-    display: none !important;
-}
-
-.door-closed:hover {
-    display: none !important;
 }
 
 b, .icon{

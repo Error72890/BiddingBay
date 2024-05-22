@@ -1,9 +1,11 @@
 import { Component, ElementRef, Renderer2 } from '@angular/core';
+import { SessionGuard } from 'src/app/guards/session.guard';
 
 @Component({
   selector: 'app-auction-creator',
   templateUrl: './auction-creator.component.html',
-  styleUrls: ['./auction-creator.component.scss']
+  styleUrls: ['./auction-creator.component.scss'],
+  providers: [SessionGuard]
 })
 export class AuctionCreatorComponent {
   imageSrc: HTMLImageElement | ArrayBuffer | null = null; // Property for holding image source

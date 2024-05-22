@@ -17,7 +17,8 @@
             </div>
 
             <div class="col-lg-3 d-flex justify-content-center justify-content-end align-items-center">
-                <ul class="navbar-nav flex-row">
+                <!-- If logged show this -->
+                <ul class="navbar-nav flex-row" *ngIf="userId">
                     <li class="nav-item me-4">
                         <a class="nav-link d-sm-flex align-items-sm-center" href="/user-profile">
                             <img src="https://ew.com/thmb/hCQO2_ETsK--fb_HzBOCQNM0F-4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/james-murray-1-2000-63baf85a56984bd7a9846947a9e0f585.jpg"
@@ -35,8 +36,6 @@
                                 99+
                             </span>
                         </a>
-
-
                     </li>
 
                     <li class="nav-item me-4">
@@ -58,31 +57,38 @@
                     </li>
 
                     <li class="nav-item me-4">
-                        <a class="nav-link position-relative" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <i-bs name="door-closed" width="4vh" height="4vh" class="door-closed"></i-bs>
-                            <i-bs name="door-open" width="4vh" height="4vh" class="door-open d-none"></i-bs>
+                        <a class="nav-link position-relative" data-bs-toggle="modal" data-bs-target="#logOutModal">
+                            <i-bs name="box-arrow-in-right" width="4vh" height="4vh"></i-bs>
                         </a>
 
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        <div class="modal fade" id="logOutModal" tabindex="-1" aria-labelledby="logOutModalLabel"
                             aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Cerrar sesión</h5>
+                                        <h5 class="modal-title" id="logOutModalLabel">Cerrar sesión</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Cancelar</button>
-                                        <button type="button" class="btn btn-danger" href="#">Continuar</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="button" class="btn btn-danger" (click)="closeSession()" data-bs-dismiss="modal">Continuar</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </li>
+                </ul>
 
-                    <!-- Modal -->
+                <!-- Else show this -->
+                <ul class="navbar-nav ms-auto" *ngIf="!userId">
+                    <li class="nav-item me-4">     
+                        <a class="nav-link position-relative login-btn" href="/authentication">
+                            <strong>Iniciar Sesión</strong>
+                            <i-bs name="door-closed" width="4vh" height="4vh" class="door-closed m-2"></i-bs>
+                            <i-bs name="door-open" width="4vh" height="4vh" class="door-open d-none m-2"></i-bs>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -97,7 +103,7 @@
                         Inicio
                     </a>
                 </li>
-                <li class="nav-item text-center mx-3 mx-lg-1">
+                <li class="nav-item text-center mx-3 mx-lg-1"  *ngIf="userId">
                     <a class="nav-link" href="/auction-creator">
                         Subastar
                     </a>
@@ -107,7 +113,7 @@
                         Categorías
                     </a>
                 </li>
-                <li class="nav-item text-center mx-3 mx-lg-1">
+                <li class="nav-item text-center mx-3 mx-lg-1"  *ngIf="userId">
                     <a class="nav-link" href="/history">
                         Historial de busqueda
                     </a>
