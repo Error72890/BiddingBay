@@ -1,19 +1,43 @@
 <div class="page-content">
-    <div class="file-upload mt-4 card">
-        <button class="file-upload-btn" type="button" (click)="triggerFileInput()">Add Image</button>
+
+    <form (ngSubmit)="onSubmit()" #auctionForm="ngForm">
+        <div>
+          <label for="objectName">Nombre del Objeto:</label>
+          <input type="text" id="objectName" required [(ngModel)]="auction.objectName" name="objectName">
+        </div>
+        <div>
+          <label for="description">Descripción:</label>
+          <input type="text" id="description" required [(ngModel)]="auction.description" name="description">
+        </div>
+        <div>
+            <label>Categorías:</label>
+            <div *ngFor="let category of categories">
+              <input type="checkbox" [(ngModel)]="selectedCategories[category]" [value]="category" [name]="category">{{ category }}
+            </div>
+          </div>
+        <div>
+          <label for="endDate">Fecha de Fin:</label>
+          <input type="datetime-local" id="endDate" required [(ngModel)]="auction.endDate" name="endDate" [min]="getCurrentDateTime()">
+          <p *ngIf="!isEndDateValid()">Ingresa una fecha y hora posterior a la actual</p>
+        </div>
+        <div>
+          <label for="startBid">Puja Inicial:</label>
+          <input type="number" id="startBid" required [(ngModel)]="auction.startBid" name="startBid">
+        </div>
+        <div 
+          class="file-drop" 
+          (dragover)="onDragOver($event)" 
+          (dragleave)="onDragLeave($event)" 
+          (drop)="onDrop($event)" 
+          (click)="onClick()">
+          <p>Arrastra y suelta tu imagen aquí o haz clic para seleccionar</p>
+          <input type="file" #fileInput accept="image/*" (change)="onFileChange($event)" style="display: none;"/>
+        </div>
+        <div *ngIf="imageSrc">
+          <img [src]="imageSrc" alt="Imagen cargada" class="uploaded-image"/>
+        </div>
+        <button type="submit" [disabled]="!auctionForm.form.valid || !isEndDateValid()">Guardar</button>
     
-        <div class="image-upload-wrap">
-            <input class="file-upload-input" #fileInput type='file' (change)="readURL(fileInput)" accept="image/*" />
-            <div class="drag-text">
-                <h3>Drag and drop a file or select add Image</h3>
-            </div>
-        </div>
-        <div class="file-upload-content" *ngIf="imageSrc">
-            <img class="file-upload-image" [src]="imageSrc" alt="your image" />
-            <div class="image-title-wrap">
-                <button type="button" (click)="removeUpload()" class="remove-image">Remove <span
-                        class="image-title">{{ imageName }}</span></button>
-            </div>
-        </div>
-    </div>
+      </form>
+      
 </div>
