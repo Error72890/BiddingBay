@@ -26,10 +26,4 @@ export class HomeComponent implements OnInit {
       this.filteredAuctions = [...this.auctions]; // mostrar todas las subastas al inicio
     });
   }
-
-  filterAuctions(searchValue: string) {
-    this.filteredAuctions = this.auctions.filter((auction) =>
-      auction.objectName.toLowerCase().includes(searchValue.toLowerCase())
-    );
-  }
 }

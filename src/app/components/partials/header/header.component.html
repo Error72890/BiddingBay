@@ -9,17 +9,19 @@
 
             <div class="col-lg-6">
                 <div class="input-group input-group w-auto my-auto mb-md-0 px-4 pt-1">
-                    <button class="btn search-icon btn bg-light" id="search" href="/auction-list/filter:">
+                    <button class="btn search-icon btn bg-light" id="search" (click)="navigateSearchByFilter()">
                         <i-bs name="search" width="50" height="20"></i-bs>
                     </button>
-                    <input type="text" class="form-control" placeholder="Busca productos, subastas, y más...">
+                    <input type="text" class="form-control" [(ngModel)]="search" placeholder="Busca productos, subastas, y más...">
+
+                    
                 </div>
             </div>
 
             <div class="col-lg-3 d-flex justify-content-center justify-content-end align-items-center">
                 <!-- If logged show this -->
                 <ul class="navbar-nav flex-row" *ngIf="userId">
-                    <li class="nav-item me-4">
+                    <li class="nav-item me-3">
                         <a class="nav-link d-sm-flex align-items-sm-center" href="/user-profile">
                             <div class="user-image">
                                 {{userName.charAt(0) + userName.charAt(userName.indexOf(' ')+1)}}
@@ -28,7 +30,7 @@
                         </a>
                     </li>
 
-                    <li class="nav-item me-4">
+                    <li class="nav-item me-3">
                         <a class="nav-link position-relative" data-bs-toggle="offcanvas" role="button"
                             aria-expanded="false" href="#offcanvasAlerts" aria-controls="offcanvasAlerts">
                             <i-bs name="bell" width="4vh" height="4vh"></i-bs>
@@ -39,7 +41,7 @@
                         </a>
                     </li>
 
-                    <li class="nav-item me-4">
+                    <li class="nav-item me-3">
                         <a class="nav-link position-relative"  data-bs-toggle="offcanvas" role="button"
                         aria-expanded="false" href="#offcanvasMessages" aria-controls="offcanvasMessages">
                             <i-bs name="envelope" width="4vh" height="4vh"></i-bs>
@@ -50,14 +52,14 @@
                         </a>
                     </li>
 
-                    <li class="nav-item me-4">
+                    <li class="nav-item me-3">
                         <a class="nav-link position-relative" href="/settings">
                             <i-bs name="gear" width="4vh" height="4vh">
                             </i-bs>
                         </a>
                     </li>
 
-                    <li class="nav-item me-4">
+                    <li class="nav-item me-3">
                         <a class="nav-link position-relative" data-bs-toggle="modal" data-bs-target="#logOutModal">
                             <i-bs name="box-arrow-in-right" width="4vh" height="4vh"></i-bs>
                         </a>
@@ -93,7 +95,8 @@
                 </ul>
             </div>
         </div>
-    </div>
+    </div>   
+                                    
 </div>
 <div class="fake-nav-2 text-center navbar-expand-lg">
     <div class="container-fluid">
@@ -112,11 +115,6 @@
                 <li class="nav-item text-center mx-3 mx-lg-1">
                     <a class="nav-link" href="/categories">
                         Categorías
-                    </a>
-                </li>
-                <li class="nav-item text-center mx-3 mx-lg-1"  *ngIf="userId">
-                    <a class="nav-link" href="/history">
-                        Historial de busqueda
                     </a>
                 </li>
             </ul>

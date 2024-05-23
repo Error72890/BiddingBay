@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuctionService } from 'src/app/services/api/auction.service';
-import { Observable } from 'rxjs';
 import { SessionGuard } from 'src/app/guards/session.guard';
 
 @Component({
@@ -13,7 +12,8 @@ import { SessionGuard } from 'src/app/guards/session.guard';
 })
 export class AuctionListComponent implements OnInit {
   category: string = '';
-  auctions: any
+  itemName: string = '';
+  auctions: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -23,14 +23,19 @@ export class AuctionListComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const category = params.get('category');
+      const itemName = params.get('itemName');
+
       if (category !== null) {
         this.category = category;
-        this.loadAuctions(this.category);
+        this.loadAuctionsByCategory(this.category);
+      } else if (itemName !== null) {
+        this.itemName = itemName;
+        this.loadAuctionsByItemName(this.itemName);
       }      
     });
   }
 
-  loadAuctions(category: string) {
+  loadAuctionsByCategory(category: string) {
     this.auctionService.getAuctionsByCategory(category).subscribe({
       next: (response) => {        
         this.auctions = response.auctions;
@@ -40,4 +45,23 @@ export class AuctionListComponent implements OnInit {
       }
     });    
   }
+
+  loadAuctionsByItemName(itemName: string) {
+    this.auctionService.getAuctionList().subscribe({
+      next: (response) => {        
+        this.auctions = response.auctions;
+        this.filterAuctions(itemName);
+      },
+      error: (error) => {
+        console.error('Error loading auctions by item name', error);
+      }
+    });
+  }
+
+  filterAuctions(searchValue: string) {
+    this.auctions = this.auctions.filter((auction) =>
+      auction.objectName.toLowerCase().includes(searchValue.toLowerCase())
+    );
+  }
+
 }

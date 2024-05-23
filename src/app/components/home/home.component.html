@@ -5,35 +5,35 @@
                 <h2 class="h3">Tendencia en BiddingBay</h2>
                 <div class="row gutters-sm d-flex justify-content-between">
                     <a class="col-sm-6 col-md-4 col-lg-2 mb-3 align-items-center text-center foot-text" href="auction-list/Arte">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKMgPA1y9U2i2DB2Y7Dl_ulk-et5lUEDyfMngd8td-pg&s" alt="Arte"
+                        <img src="https://balcru.com/cdn/shop/products/colecciones-arte-famoso-noche-estrellada-horizontal-aluminio.jpg?v=1587580889" alt="Arte"
                             class="rounded-circle" width="150">
                         <div class="mt-3">
                             <h5>Arte</h5>
                         </div>
                     </a>
                     <a class="col-sm-6 col-md-4 col-lg-2 mb-3 align-items-center text-center foot-text" href="auction-list/Electronica">
-                        <img src="https://m.media-amazon.com/images/I/616HouHHLDL.jpg" alt="Electrónica y tecnología"
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6V_F3saWP90BTW_sn3nnd68XBDdxs7b6_ZL2ZAcrfIQ&s" alt="Electrónica y tecnología"
                             class="rounded-circle" width="150">
                         <div class="mt-3">
                             <h5>Electrónica</h5>
                         </div>
                     </a>
                     <a class="col-sm-6 col-md-4 col-lg-2 mb-3 align-items-center text-center foot-text" href="auction-list/Moda">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAvp8PoL26UwtnxdAy774BgivbNQnZyAG8dp4O2nMi7w&s" alt="Moda y accesorios"
+                        <img src="https://ae01.alicdn.com/kf/Sddd48c41b6054f29a9cf4893dc1ca2d5Q.jpg_640x640Q90.jpg_.webp" alt="Moda y accesorios"
                             class="rounded-circle" width="150">
                         <div class="mt-3">
                             <h5>Moda</h5>
                         </div>
                     </a>
                     <a class="col-sm-6 col-md-4 col-lg-2 mb-3 align-items-center text-center foot-text" href="auction-list/Hogar">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHR4Ijk4Q1iMGWfntEvXVkg9FpOyBqlahD28wZXzL0tg&s" alt="Hogar y jardín"
+                        <img src="https://gotmuebles.mx/cdn/shop/products/mueble-tv-moderno-kontempo-wall-unit-centros-entretenimiento-muebleria-monterrey-2.jpg?v=1468361988" alt="Hogar y jardín"
                             class="rounded-circle" width="150">
                         <div class="mt-3">
                             <h5>Hogar</h5>
                         </div>
                     </a>
                     <a class="col-sm-6 col-md-4 col-lg-2 mb-3 align-items-center text-center foot-text" href="auction-list/Relojes">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtgXBQYKvfeeUqyK7G1cFk1f5ckKRrn4N4Z_Lv4MGxiQ&s" alt="Joyería y relojes"
+                        <img src="https://resources.sears.com.mx/medios-plazavip/mkt/631622604ab25_img_20220905_112130_-1080_x_1080_p-xel-jpg.jpg?scale=500&qlty=75" alt="Joyería y relojes"
                             class="rounded-circle" width="150">
                         <div class="mt-3">
                             <h5>Relojes</h5>
@@ -41,7 +41,6 @@
                     </a>
                 </div>  
                 <h2 class="h3 mt-3">Subastas</h2>
-                <input type="text" class="mb-4" placeholder="Buscar artículos..." [(ngModel)]="filterSearch" (ngModelChange)="filterAuctions(filterSearch)">                
                 <div class="row gutters-sm">
                     <app-auction-card *ngFor="let auction of filteredAuctions" class="col-sm-6 col-lg-3 mb-3" [auction]="auction"></app-auction-card>
                 </div>  

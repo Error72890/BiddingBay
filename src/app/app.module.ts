@@ -14,7 +14,6 @@ import { AuthenticationComponent } from './components/authentication/authenticat
 import { AuctionListComponent } from './components/auction-list/auction-list.component';
 import { AuctionDetailComponent } from './components/auction-detail/auction-detail.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
-import { HistoryComponent } from './components/history/history.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { AuctionCreatorComponent } from './components/auction-creator/auction-creator.component';
 import { CategoriesComponent } from './components/categories/categories.component';
@@ -32,7 +31,6 @@ import { SessionGuard } from './guards/session.guard';
     AuctionListComponent,
     AuctionDetailComponent,
     UserProfileComponent,
-    HistoryComponent,
     SettingsComponent,
     AuctionCreatorComponent,
     CategoriesComponent,

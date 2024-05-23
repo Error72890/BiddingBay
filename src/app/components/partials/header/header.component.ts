@@ -14,6 +14,8 @@ export class HeaderComponent {
   userName: string = 'Nombre';
   userSesion: string | null = localStorage.getItem('token');
 
+  search: string = "";
+
   constructor(private sessionGuard: SessionGuard, private router: Router, private route: ActivatedRoute) {
     /**
      * Obtiene la bandera de sesion para mostrar el contenido adecuado en el header al actualizar.
@@ -28,5 +30,10 @@ export class HeaderComponent {
 
   closeSession() {
     this.sessionGuard.logout();
+  }
+
+  navigateSearchByFilter(){
+    const search = this.search;
+    this.router.navigate(['/auction-list/search', search]);
   }
 }
