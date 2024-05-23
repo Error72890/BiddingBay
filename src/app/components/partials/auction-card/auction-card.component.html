@@ -1,11 +1,11 @@
-<a class="card h-100" [routerLink]="['/auction-details', auction.auctionID]">    <div class="card-body">
+<a class="card h-100" [routerLink]="['/auction-details', auction.auctionId]">    <div class="card-body">
       <h6 class="d-flex align-items-center mb-3">
         <i class="material-icons mr-2"><b>{{auction.objectName}}</b></i>
       </h6>
       <div class="d-flex justify-content-center">
-        <img *ngIf="imageUrl" [src]="imageUrl" alt="Admin" class="rounded object-fit-cover" width="200px" height="200px">
+        <img *ngIf="imageUrl" [src]="imageUrl" alt="ItemImg" class="rounded object-fit-cover" width="200px" height="200px">
       </div>
-      <div class="my-2">Apuesta más alta: <small>${{auction.currentMaxBid.toLocaleString()}}</small></div>
+      <div class="my-2">Apuesta más alta: <small>100</small></div>
       Tiempo restante: <small>{{remainingTime}}</small>
       <div class="progress mb-3" style="height: 5px">
         <div class="progress-bar bg-primary" role="progressbar" [style.width.%]="progress" aria-valuenow="6"

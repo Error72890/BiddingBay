@@ -18,7 +18,6 @@ export class AuctionDetailComponent implements OnInit {
   remainingTime: string = '';
   imageUrl: string | null = null;
 
-
   constructor(private route: ActivatedRoute, private router: Router, private auctionService: AuctionService) { }
 
   ngOnInit(): void {    
@@ -72,7 +71,9 @@ export class AuctionDetailComponent implements OnInit {
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
+    if (seconds < 0){
+      return `Finalizada.`
+    }
     return `${days}d ${hours}h ${minutes}m ${seconds}s`;
   }
 
@@ -85,8 +86,6 @@ export class AuctionDetailComponent implements OnInit {
     else console.log("No hay imagen");
     
   }
-
-
 
   redirectToHome() {
     this.router.navigate(['/']); // Redirige a la página principal

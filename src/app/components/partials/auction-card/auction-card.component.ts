@@ -49,6 +49,7 @@ export class AuctionCardComponent implements OnInit, OnDestroy {
     return Math.floor(progressPercentage);
   }
   
+  //${{auction.currentMaxBid.toLocaleString()}} 
 
   updateRemainingTime() {
     this.remainingTime = this.getRemainingTime(this.auction.endDate);

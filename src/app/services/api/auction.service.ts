@@ -11,13 +11,13 @@ export class AuctionService {
   private readonly TOKEN = localStorage.getItem('token') || '';
 
   constructor(private readonly http: HttpClient) { }
-  addAuction(name: string, description: string, categories: string, startDate: string, endDate: string, imgID: number) {
+  addAuction(name: string, description: string, categories: string, startDate: string, endDate: string, img: number, minBid: number, minBidIncrement: number) {
 
     const headers = new HttpHeaders({
       'Authorization': this.TOKEN,
     });
 
-    const body = { name, description, categories, startDate, endDate, imgID };
+    const body = { name, description, categories, startDate, endDate, img, minBid, minBidIncrement };
 
     return this.http.post(`${this.API_URL}/add`, body, { headers });
   }
@@ -49,13 +49,13 @@ export class AuctionService {
     return this.http.get(`${this.API_URL}/get/${auctionId}`, { headers });
   }
 
-  editAuction(auctionId: number, name: string, description: string, categories: string, startDate: string, endDate: string, imgID: number) {
+  editAuction(auctionId: number, name: string, description: string, categories: string, startDate: string, endDate: string, img: number, minBid: number, minBidIncrement: number) {
 
     const headers = new HttpHeaders({
       'Authorization': this.TOKEN,
     });
 
-    const body = { name, description, categories, startDate, endDate, imgID };
+    const body = { name, description, categories, startDate, endDate, img, minBid, minBidIncrement };
 
     return this.http.put(`${this.API_URL}/edit/${auctionId}`, body, { headers });
 
