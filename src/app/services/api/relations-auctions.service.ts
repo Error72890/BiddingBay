@@ -10,12 +10,12 @@ export class RelationsAuctionsService {
 
   constructor(private readonly http: HttpClient) {}
 
-  addAuctionRelation(auctionId: number, creatorUserId: number, minStartBid: number) {
+  addAuctionRelation(auctionId: number, userId: number, isCreator: boolean, bidAmt: number) {
     const headers = new HttpHeaders({
       Authorization: this.TOKEN,
     });
 
-    const body = { auctionId, creatorUserId, minStartBid };
+    const body = { auctionId, userId, isCreator, bidAmt };
 
     return this.http.post(`${this.API_URL}/add`, body, { headers });
   }
@@ -43,7 +43,7 @@ export class RelationsAuctionsService {
       Authorization: this.TOKEN,
     });
 
-    return this.http.get(`${this.API_URL}/get/comment/${auctionId}`, {
+    return this.http.get(`${this.API_URL}/get/auction/${auctionId}`, {
       headers,
     });
   }
@@ -56,31 +56,24 @@ export class RelationsAuctionsService {
     return this.http.get(`${this.API_URL}/get/user/${userId}`, { headers });
   }
 
-  editCommentRelation(
-    relationAuctionId: number,
-    auctionId: number, 
-    creatorUserId: number, 
-    minStartBid: number, 
-    bidderUserID: number, 
-    currentMaxBid: number
-  ) {
+  editAuctionRelation( relationAuctionId: number, auctionId: number, userId: number, isCreator: boolean, bidAmt: number ) {
     const headers = new HttpHeaders({
       Authorization: this.TOKEN,
     });
 
-    const body = { auctionId, creatorUserId, minStartBid, bidderUserID, currentMaxBid };
+    const body = { relationAuctionId, auctionId, userId, isCreator, bidAmt };
 
     return this.http.put(`${this.API_URL}/edit/${relationAuctionId}`, body, {
       headers,
     });
   }
 
-  deleteCommentRelationByCommentId(commentId: number) {
+  deleteAuctionRelation(relationId: number) {
     const headers = new HttpHeaders({
       Authorization: this.TOKEN,
     });
 
-    return this.http.delete(`${this.API_URL}/deleteByCommentId/${commentId}`, {
+    return this.http.delete(`${this.API_URL}/delete/${relationId}`, {
       headers,
     });
   }
