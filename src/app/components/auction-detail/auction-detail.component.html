@@ -11,10 +11,11 @@
     <div class="card mb-2" *ngIf="auction">
       <div class="row mt-4">
         <div class="col-md-6">
-        <div class="d-flex justify-content-center">
-          <img *ngIf="auction.img !== ''" [src]="auction.img" alt="ItemImg" class="rounded card-image">
-          <img *ngIf="auction.img === ''" src="https://www.rallis.com/Upload/Images/thumbnail/Product-inside.png" alt="ItemImg" class="rounded card-image">
-        </div> 
+          <div class="d-flex justify-content-center">
+            <img *ngIf="auction.img !== ''" [src]="auction.img" alt="ItemImg" class="rounded card-image">
+            <img *ngIf="auction.img === ''" src="https://www.rallis.com/Upload/Images/thumbnail/Product-inside.png"
+              alt="ItemImg" class="rounded card-image">
+          </div>
         </div>
         <div class="col-md-6">
           <h1>{{ auction.objectName }}</h1>
@@ -26,7 +27,35 @@
           <div *ngIf="!finished">
             <h3 class="text-primary">Mínimo requerido: ${{ minBidRequired }}</h3>
             <p>Finaliza en: <span id="countdown">{{remainingTime}}</span></p>
-            <button class="btn btn-primary btn-lg mt-1">Participar</button>
+            <button class="btn btn-primary btn-lg mt-1" data-bs-toggle="modal" data-bs-target="#bidModal">Participar</button>
+
+            <div class="modal fade" id="bidModal" tabindex="-1" aria-labelledby="bidModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <form (ngSubmit)="makeABid()" [formGroup]="bidFormItem">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="bidModalLabel">Pujar en la subasta</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-content p-2">
+                        Esta subasta solo acepta pujas en incrementos de ${{auction.minBid}}.
+                        <div class="inputBox">
+                          <input type="number" placeholder="Monto mínimo de puja: ${{minBidRequired}}" class="form-control" formControlName="bidAmt"
+                            [(ngModel)]="bidData.bidAmt" >
+                        </div>
+                        <div *ngIf="(bidFormItem.get('bidAmt')?.hasError('notMultipleOfValue'))" class="alert alert-danger mt-1 pt-1 pb-1 d-flex justify-content-center">
+                          La puja no es un múltiplo de {{auction.minBid}}.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                      <button type="submit" class="btn btn-danger" data-bs-dismiss="modal" [disabled]="bidFormItem.invalid">Continuar</button>
+                    </div>
+                </form>
+                </div>
+              </div>
+            </div>
+
           </div>
           <p class="mt-4"><strong>Description:</strong></p>
           <p>{{ auction.description }}</p>

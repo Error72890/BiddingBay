@@ -4,6 +4,14 @@ import { SessionGuard } from 'src/app/guards/session.guard';
 import { UserService } from 'src/app/services/api/user.service';
 import { AuctionService } from 'src/app/services/api/auction.service';
 import { RelationsAuctionsService } from 'src/app/services/api/relations-auctions.service';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-auction-detail',
@@ -21,12 +29,16 @@ export class AuctionDetailComponent implements OnInit {
   finished: boolean = false;
   imageUrl: string | null = null;
 
+  bidFormItem!: FormGroup;
+  bidData: any = {};
+  invalidBid = false;
+
   maxBid = 0;
   minBidRequired = 0;
 
   bid: any = {
     bidderName: '',
-    bidAmt: 0
+    bidAmt: 0,
   };
   bidders: any[] = [];
 
@@ -39,9 +51,69 @@ export class AuctionDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    //Must initialice it
+    this.bidFormItem = new FormGroup({
+      bidAmt: new FormControl(this.bidData.number, [
+        Validators.required,
+        Validators.min(1),
+        this.multipleOfValueValidator(1),
+      ]),
+    });
+
     this.route.paramMap.subscribe((params) => {
       this.auctionId = parseInt(params.get('auctionId') || '0', 10);
-      this.getAuctionDetails();
+      if (!this.auctionId) {
+        this.loading = false;
+        this.error = true;
+        return;
+      }
+      this.auctionService.getAuctionById(this.auctionId).subscribe({
+        next: (response) => {
+          this.auction = response.auction;
+          this.loading = false;
+          this.updateRemainingTime();
+          this.intervalId = setInterval(() => {
+            this.updateRemainingTime();
+          }, 1000);
+        },
+        error: (error) => {
+          this.loading = false;
+          this.error = true;
+        },
+      });
+
+      this.relationsAuctionsService
+        .getAuctionRelationsByAuctionId(this.auctionId)
+        .subscribe((response) => {
+          const relations_auctions = response.relations_auctions;
+          relations_auctions.forEach((relation: any) => {
+            this.bid.bidderName = '';
+            this.bid.bidAmt = 0;
+            if (relation.isCreator == 0) {
+              if (relation.bidAmt > this.minBidRequired) {
+                this.maxBid = relation.bidAmt;
+                this.minBidRequired = relation.bidAmt;
+              }
+              this.userService
+                .getUserById(relation.userId)
+                .subscribe((response2) => {
+                  this.bid.bidderName = response2.user.fullName;
+                });
+              this.bid.bidAmt = relation.bidAmt;
+
+              this.bidders.push(this.bid);
+            }
+            this.minBidRequired =
+              this.auction.minBidIncrement + this.minBidRequired;
+            this.bidFormItem = new FormGroup({
+              bidAmt: new FormControl(this.bidData.number, [
+                Validators.required,
+                Validators.min(this.minBidRequired),
+                this.multipleOfValueValidator(this.auction.minBidIncrement),
+              ]),
+            });
+          });
+        });
     });
   }
 
@@ -49,52 +121,6 @@ export class AuctionDetailComponent implements OnInit {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
-  }
-
-  getAuctionDetails() {
-    if (!this.auctionId) {
-      this.loading = false;
-      this.error = true;
-      return;
-    }
-    this.auctionService.getAuctionById(this.auctionId).subscribe({
-      next: (response) => {
-        this.auction = response.auction;
-        this.loading = false;
-        this.updateRemainingTime();
-        this.intervalId = setInterval(() => {
-          this.updateRemainingTime();
-        }, 1000);
-      },
-      error: (error) => {
-        this.loading = false;
-        this.error = true;
-      },
-    });
-
-    this.relationsAuctionsService
-      .getAuctionRelationsByAuctionId(this.auctionId)
-      .subscribe((response) => {
-        const relations_auctions = response.relations_auctions;
-        relations_auctions.forEach((relation: any) => {
-          this.bid.bidderName = "";
-          this.bid.bidAmt = 0;
-          if(relation.isCreator == 0){
-            if (relation.bidAmt > this.minBidRequired) {
-              this.maxBid = relation.bidAmt;
-              this.minBidRequired = relation.bidAmt;
-            }
-            this.userService.getUserById(relation.userId)
-            .subscribe((response2) => {
-              this.bid.bidderName = response2.user.fullName;
-            });
-            this.bid.bidAmt = relation.bidAmt;
-  
-            this.bidders.push(this.bid);
-          }
-          this.minBidRequired = this.auction.minBidIncrement + this.minBidRequired;
-        });
-      });
   }
 
   updateRemainingTime() {
@@ -127,5 +153,25 @@ export class AuctionDetailComponent implements OnInit {
 
   redirectToHome() {
     this.router.navigate(['/']); // Redirige a la página principal
+  }
+
+  multipleOfValueValidator(multiple: number): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (value % multiple !== 0) {
+        return { notMultipleOfValue: { multiple } };
+      }
+      return null;
+    };
+  }
+
+  makeABid() {
+    this.bidData.bid = this.bidFormItem.value.bidAmt;
+    const userId = parseInt(localStorage.getItem('userId')!);
+    this.relationsAuctionsService.addAuctionRelation(this.auctionId, userId, false, this.bidData.bid).subscribe({
+        next: (response) => {
+          window.location.reload();
+        },
+      });
   }
 }
