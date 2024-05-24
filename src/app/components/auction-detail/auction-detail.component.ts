@@ -21,6 +21,7 @@ export class AuctionDetailComponent implements OnInit {
   finished: boolean = false;
   imageUrl: string | null = null;
 
+  maxBid = 0;
   minBidRequired = 0;
 
   bid: any = {
@@ -84,6 +85,7 @@ export class AuctionDetailComponent implements OnInit {
           this.bid.bidAmt = 0;
           if(relation.isCreator == 0){
             if (relation.bidAmt > this.minBidRequired) {
+              this.maxBid = relation.bidAmt;
               this.minBidRequired = relation.bidAmt;
             }
             this.userService.getUserById(relation.userId)
@@ -94,9 +96,8 @@ export class AuctionDetailComponent implements OnInit {
   
             this.bidders.push(this.bid);
           }
+          this.minBidRequired = this.auction.minBidIncrement + this.minBidRequired;
         });
-
-        this.minBidRequired = this.auction.minBid + this.minBidRequired;
       });
   }
 

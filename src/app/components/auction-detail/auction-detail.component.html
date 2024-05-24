@@ -20,7 +20,7 @@
           <p class="text-muted">Categorías: {{ auction.categories }}</p>
           <div *ngIf="finished">
             <p><strong>--- Finalizada ---</strong></p>
-            <h3 class="text-primary">Comprada por: ${{ minBidRequired }}</h3>
+            <h3 class="text-primary">Comprada por: ${{ maxBid }}</h3>
           </div>
           <div *ngIf="!finished">
             <h3 class="text-primary">Mínimo requerido: ${{ minBidRequired }}</h3>
