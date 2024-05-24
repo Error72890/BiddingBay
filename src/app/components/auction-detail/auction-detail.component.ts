@@ -89,6 +89,7 @@ export class AuctionDetailComponent implements OnInit {
           relations_auctions.forEach((relation: any) => {
             this.bid.bidderName = '';
             this.bid.bidAmt = 0;
+            this.minBidRequired = relation.bidAmt;
             if (relation.isCreator == 0) {
               if (relation.bidAmt > this.minBidRequired) {
                 this.maxBid = relation.bidAmt;

@@ -38,13 +38,13 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-content p-2">
-                        Esta subasta solo acepta pujas en incrementos de ${{auction.minBid}}.
+                        Esta subasta solo acepta pujas en incrementos de ${{auction.minBidIncrement}}.
                         <div class="inputBox">
                           <input type="number" placeholder="Monto mínimo de puja: ${{minBidRequired}}" class="form-control" formControlName="bidAmt"
                             [(ngModel)]="bidData.bidAmt" >
                         </div>
                         <div *ngIf="(bidFormItem.get('bidAmt')?.hasError('notMultipleOfValue'))" class="alert alert-danger mt-1 pt-1 pb-1 d-flex justify-content-center">
-                          La puja no es un múltiplo de {{auction.minBid}}.
+                          La puja no es un múltiplo de {{auction.minBidIncrement}}.
                         </div>
                     </div>
                     <div class="modal-footer">

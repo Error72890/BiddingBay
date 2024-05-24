@@ -51,11 +51,17 @@ export class AuctionCardComponent implements OnInit, OnDestroy {
     const start = new Date(startDate).getTime();
     const end = new Date(endDate).getTime();
     const now = new Date().getTime();
+    
     const total = end - start;
     const elapsed = now - start;
+
+
+    
   
     // Calcula el porcentaje de tiempo transcurrido
     const progressPercentage = (elapsed / total) * 100
+
+    
   
     return Math.floor(progressPercentage);
   }
