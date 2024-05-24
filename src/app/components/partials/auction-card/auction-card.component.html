@@ -5,7 +5,7 @@
       <div class="d-flex justify-content-center">
         <img *ngIf="imageUrl" [src]="imageUrl" alt="ItemImg" class="rounded object-fit-cover" width="200px" height="200px">
       </div>
-      <div class="my-2">Apuesta más alta: <small>100</small></div>
+      <div class="my-2">Apuesta más alta: <small>${{maxBid}}</small></div>
       Tiempo restante: <small>{{remainingTime}}</small>
       <div class="progress mb-3" style="height: 5px">
         <div class="progress-bar bg-primary" role="progressbar" [style.width.%]="progress" aria-valuenow="6"

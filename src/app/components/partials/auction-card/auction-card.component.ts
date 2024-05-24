@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { RelationsAuctionsService } from 'src/app/services/api/relations-auctions.service';
 
 @Component({
   selector: 'app-auction-card',
@@ -12,7 +13,22 @@ export class AuctionCardComponent implements OnInit, OnDestroy {
   intervalId: any;
   imageUrl: string | null = null;
 
+  maxBid: number = 0;
+
+  constructor(private relationsAuctionsService: RelationsAuctionsService) { 
+  }
+
   ngOnInit() {
+    this.maxBid = this.auction.minBid;
+    this.relationsAuctionsService.getAuctionRelationsByAuctionId(this.auction.auctionId).subscribe((response) => {
+      const relations_auctions = response.relations_auctions;
+      relations_auctions.forEach((relation: any) => {
+        if(relation.bidAmt > this.maxBid){
+          this.maxBid = relation.bidAmt;
+        }
+      });
+    });
+
     this.updateRemainingTime();
     this.intervalId = setInterval(() => {
       this.updateRemainingTime();
