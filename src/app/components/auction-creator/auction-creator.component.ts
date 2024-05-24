@@ -1,5 +1,10 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ImageService } from 'src/app/services/api/image.service';
+import { AuctionService } from 'src/app/services/api/auction.service';
+import { RelationsAuctionsService } from 'src/app/services/api/relations-auctions.service';
+import { Router, ActivatedRoute } from '@angular/router';
+
 
 interface Auction {
   objectName: string;
@@ -7,7 +12,8 @@ interface Auction {
   categories: string[];
   startDate: string;
   endDate: string;
-  startBid: number;
+  minBid: number;
+  minBidIncrement: number;
   img: File | null;
 }
 
@@ -24,16 +30,68 @@ export class AuctionCreatorComponent {
     categories: [],
     startDate: '',
     endDate: '',
-    startBid: 0,
+    minBid: 0,
+    minBidIncrement: 0,
     img: null,
   };
-  public categories: string[] = ['Category 1', 'Category 2', 'Category 3']; // Define las categorías disponibles
+
+  private userId: number = parseInt(localStorage.getItem('userId')!)
+  public categories: string[] = [
+    'Libros',
+    'Pinturas',
+    'Esculturas',
+    'Arte',
+    'Antiguedades',
+    'Telefonos',
+    'Tablets',
+    'Computadoras',
+    'DispositivosElectronicos',
+    'VideojuegosyConsolas',
+    'RopaparaMujeres',
+    'RopaparaHombres',
+    'ZapatosyCalzado',
+    'BolsosyCarteras',
+    'Muebles',
+    'Electrodomesticos',
+    'DecoracióndeCasas',
+    'HerramientasdeJardineria',
+    'Anillos',
+    'Collares',
+    'Pulseras',
+    'Relojes',
+    'Automoviles',
+    'Motocicletas',
+    'PartesyAccesorios',
+    'VehiculosRecreacionales',
+    'JuguetesEducativos',
+    'FigurasdeAccion',
+    'Monedas',
+    'Sellos',
+    'ArticulosdeColeccion',
+    'EquipodeEjercicio',
+    'ArticulosDeportivos',
+    'CampamentoyAventuras',
+    'EquipamientoparaDeportesAcuaticos',
+    'CDyVinilos',
+    'InstrumentosMusicales',
+    'ProduccionMusical',
+    'HerramientasManuales',
+    'EquipamientoIndustrial',
+    'MaterialdeConstruccion',
+    'EquipamientoDeSeguridad'
+  ]
   public selectedCategories: { [key: string]: boolean } = {};
 
   public imageSrc: string | ArrayBuffer | null = null;
 
-  constructor(private http: HttpClient) { }
-  
+  constructor(
+    private http: HttpClient,
+    private imageService: ImageService,
+    private auctionService: AuctionService,
+    private relationsAuctionsService: RelationsAuctionsService,
+    private router: Router,
+  ) {}
+
   getCurrentDateTime(): string {
     return new Date().toISOString().slice(0, 16);
 
@@ -43,6 +101,10 @@ export class AuctionCreatorComponent {
     const selectedDate = new Date(this.auction.endDate);
     const currentDate = new Date();
     return selectedDate >= currentDate;
+  }
+
+  isValidNumber(): boolean { 
+    return this.auction.minBid >= 0 && this.auction.minBidIncrement >= 0
   }
 
   onDragOver(event: DragEvent) {
@@ -87,6 +149,7 @@ export class AuctionCreatorComponent {
         this.auction.img = file;
       };
       reader.readAsDataURL(file);
+      this.hideDropArea();
     } else {
       alert('Por favor, carga solo imágenes');
     }
@@ -96,25 +159,85 @@ export class AuctionCreatorComponent {
     this.auction.categories = Object.keys(this.selectedCategories).filter(
       (category) => this.selectedCategories[category]
     );
-    const formData = new FormData();
-    formData.append('objectName', this.auction.objectName);
-    formData.append('description', this.auction.description);
-    formData.append('categories', this.auction.categories.join(','));
-    formData.append('startDate', new Date().toISOString());
-    formData.append('endDate', this.auction.endDate);
-    formData.append('startBid', new Date(this.auction.startBid).toISOString());
-    if (this.auction.img) {
-      formData.append('img', this.auction.img);
-    }
-    const formDataObject : any = {};
-    formData.forEach((value, key) => {
-      formDataObject[key] = value;
-    });
-    console.log(formDataObject);
 
-    /*  this.http.post('URL_DEL_BACKEND/guardarSubasta', formData).subscribe(response => {
-      console.log('Subasta guardada', response);
-    }); */
+    let imageUrl: string = ''
+    
+    const {
+      objectName,
+      description,
+      categories,
+      startDate,
+      endDate,
+      minBid,
+      minBidIncrement,
+    } = this.auction;
+
+    if (this.auction.img !== null) {
+      this.imageService.saveImage(this.auction.img).subscribe({
+        next: (response) => {
+          imageUrl = response.imageUrl;
+          this.auctionService
+          .addAuction(
+            objectName,
+            description,
+            categories.join(','),
+            startDate,
+            endDate,
+            imageUrl,
+            minBid,
+            minBidIncrement
+          )
+          .subscribe({
+            next: (response:any) => {
+              let auctionId = response.auctionId;
+              this.relationsAuctionsService.addAuctionRelation(response.auctionId, this.userId, true, minBid).subscribe({
+                next: (response) => {
+                  console.log('Relación creada con éxito:', response);
+                  this.router.navigate(['/auction-details', auctionId]);
+
+                }
+              })
+            },
+            error: (error) => {
+              console.error('Error al crear la subasta:', error);
+            },
+          });
+          
+        },
+        error: (error) => {
+          console.error('Error al subir la imagen:', error);
+        },
+      });
+      return;
+    }
+    
+    this.auctionService
+          .addAuction(
+            objectName,
+            description,
+            categories.join(','),
+            startDate,
+            endDate,
+            imageUrl,
+            minBid,
+            minBidIncrement
+          )
+          .subscribe({
+            next: (response:any) => {
+              let auctionId = response.auctionId;
+              this.relationsAuctionsService.addAuctionRelation(response.auctionId, this.userId, true, minBid).subscribe({
+                next: (response) => {
+                  this.router.navigate(['/auction-details', auctionId]);
+
+                }
+              })
+            },
+            error: (error) => {
+              console.error('Error al crear la subasta:', error);
+            },
+          });
+  
+   
   }
 
   private setDropAreaStyle(isDragOver: boolean) {
@@ -125,6 +248,12 @@ export class AuctionCreatorComponent {
       } else {
         dropArea.classList.remove('drag-over');
       }
+    }
+  }
+  private hideDropArea() {
+    const dropArea = document.querySelector('.file-drop');
+    if (dropArea) {
+      dropArea.classList.add('d-none');
     }
   }
 }

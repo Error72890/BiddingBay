@@ -1,42 +1,62 @@
 <div class="page-content">
 
     <form (ngSubmit)="onSubmit()" #auctionForm="ngForm">
-        <div>
-          <label for="objectName">Nombre del Objeto:</label>
-          <input type="text" id="objectName" required [(ngModel)]="auction.objectName" name="objectName">
+        <div class="input-container">
+            <div class="input-elements-wrapper">
+                <label for="objectName">Nombre del Objeto:</label>
+                <input type="text" id="objectName" required [(ngModel)]="auction.objectName" name="objectName">
+              </div>
+              
+              <div class="input-elements-wrapper">
+                <label for="description">Descripción:</label>
+                <input type="text" id="description" required [(ngModel)]="auction.description" name="description">
+              </div>
+              <label>Categorías: </label>
+              <div class="category-selector">
+                <div class="input-elements-wrapper" *ngFor="let category of categories">
+                  <input type="checkbox" [(ngModel)]="selectedCategories[category]" [value]="category" [name]="category">
+                  <span class="category-text"> {{ category }} </span>
+                </div>
+              </div>
+              
+              <div class="input-elements-wrapper">
+                <label for="endDate">Fecha de Fin:</label>
+                <input type="datetime-local" id="endDate" required [(ngModel)]="auction.endDate" name="endDate" [min]="getCurrentDateTime()">
+                <p class="error-message" *ngIf="!isEndDateValid()">Ingresa una fecha y hora posterior a la actual</p>
+              </div>
+              
+              <div class="input-elements-wrapper">
+                <label for="minBid">Puja Inicial:</label>
+                $
+                <input type="number" min="0" step="100" id="minBid" required [(ngModel)]="auction.minBid" name="minBid">
+              </div>
+              
+              <div class="input-elements-wrapper">
+                <label for="minBidIncrement">Incremento:</label>
+                $
+                <input type="number" min="0" step="10" id="minBidIncrement" required [(ngModel)]="auction.minBidIncrement" name="minBidIncrement">
+              </div>
+
+              <p class="error-message" *ngIf="!isValidNumber()">El valor no puede ser negativo</p>
+
+
+
         </div>
-        <div>
-          <label for="description">Descripción:</label>
-          <input type="text" id="description" required [(ngModel)]="auction.description" name="description">
-        </div>
-        <div>
-            <label>Categorías:</label>
-            <div *ngFor="let category of categories">
-              <input type="checkbox" [(ngModel)]="selectedCategories[category]" [value]="category" [name]="category">{{ category }}
+        <div class="drop-container">
+            <div 
+              class="file-drop" 
+              (dragover)="onDragOver($event)" 
+              (dragleave)="onDragLeave($event)" 
+              (drop)="onDrop($event)" 
+              (click)="onClick()">
+              <p>Arrastra y suelta tu imagen aquí o haz clic para seleccionar</p>
+              <input type="file" #fileInput accept="image/*" (change)="onFileChange($event)" style="display: none;"/>
             </div>
-          </div>
-        <div>
-          <label for="endDate">Fecha de Fin:</label>
-          <input type="datetime-local" id="endDate" required [(ngModel)]="auction.endDate" name="endDate" [min]="getCurrentDateTime()">
-          <p *ngIf="!isEndDateValid()">Ingresa una fecha y hora posterior a la actual</p>
+            <div *ngIf="imageSrc">
+              <img [src]="imageSrc" alt="Imagen cargada" class="uploaded-image"/>
+            </div>
+            <button type="submit" [disabled]="!auctionForm.form.valid || !isEndDateValid() || !isValidNumber()">Crear subasta</button>
         </div>
-        <div>
-          <label for="startBid">Puja Inicial:</label>
-          <input type="number" id="startBid" required [(ngModel)]="auction.startBid" name="startBid">
-        </div>
-        <div 
-          class="file-drop" 
-          (dragover)="onDragOver($event)" 
-          (dragleave)="onDragLeave($event)" 
-          (drop)="onDrop($event)" 
-          (click)="onClick()">
-          <p>Arrastra y suelta tu imagen aquí o haz clic para seleccionar</p>
-          <input type="file" #fileInput accept="image/*" (change)="onFileChange($event)" style="display: none;"/>
-        </div>
-        <div *ngIf="imageSrc">
-          <img [src]="imageSrc" alt="Imagen cargada" class="uploaded-image"/>
-        </div>
-        <button type="submit" [disabled]="!auctionForm.form.valid || !isEndDateValid()">Guardar</button>
     
       </form>
       

@@ -16,7 +16,6 @@ export class AuctionDetailComponent implements OnInit {
   error: boolean = false;
   intervalId: any;
   remainingTime: string = '';
-  imageUrl: string | null = null;
 
   constructor(private route: ActivatedRoute, private router: Router, private auctionService: AuctionService) { }
 
@@ -29,9 +28,6 @@ export class AuctionDetailComponent implements OnInit {
   ngOnDestroy() {
     if (this.intervalId) {
       clearInterval(this.intervalId);
-    }
-    if (this.imageUrl) {
-      URL.revokeObjectURL(this.imageUrl); // Limpiar la URL para evitar fugas de memoria
     }
   }
   
@@ -49,7 +45,6 @@ export class AuctionDetailComponent implements OnInit {
         this.intervalId = setInterval(() => {
           this.updateRemainingTime();
         }, 1000);
-        this.createImage();
       },
       error: (error) => {
         this.loading = false;
@@ -77,15 +72,6 @@ export class AuctionDetailComponent implements OnInit {
     return `${days}d ${hours}h ${minutes}m ${seconds}s`;
   }
 
-  createImage() {
-    if (this.auction.img && this.auction.img.data) {      
-      const byteArray = new Uint8Array(this.auction.img.data);
-      const blob = new Blob([byteArray], { type: 'image/jpeg' });
-      this.imageUrl = URL.createObjectURL(blob);
-    }
-    else console.log("No hay imagen");
-    
-  }
 
   redirectToHome() {
     this.router.navigate(['/']); // Redirige a la página principal

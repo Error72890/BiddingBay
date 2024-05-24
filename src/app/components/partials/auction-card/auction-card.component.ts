@@ -10,7 +10,6 @@ export class AuctionCardComponent implements OnInit, OnDestroy {
   remainingTime: string = '';
   progress: number = 0;
   intervalId: any;
-  imageUrl: string | null = null;
 
   ngOnInit() {
     this.updateRemainingTime();
@@ -19,15 +18,11 @@ export class AuctionCardComponent implements OnInit, OnDestroy {
       this.updateProgress();
     }, 1000);
 
-    this.createImage();
   }
 
   ngOnDestroy() {
     if (this.intervalId) {
       clearInterval(this.intervalId);
-    }
-    if (this.imageUrl) {
-      URL.revokeObjectURL(this.imageUrl); // Limpiar la URL para evitar fugas de memoria
     }
   }
 
@@ -70,11 +65,4 @@ export class AuctionCardComponent implements OnInit, OnDestroy {
     return `${days}d ${hours}h ${minutes}m ${seconds}s`;
   }
 
-  createImage() {
-    if (this.auction.img && this.auction.img.data) {
-      const byteArray = new Uint8Array(this.auction.img.data);
-      const blob = new Blob([byteArray], { type: 'image/jpeg' });
-      this.imageUrl = URL.createObjectURL(blob);
-    }
-  }
 }

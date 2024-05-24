@@ -23,7 +23,8 @@ export class HomeComponent implements OnInit {
   getAuctions() {
     this.auctionService.getAuctionList().subscribe((response) => {
       this.auctions = response.auctions;
-      this.filteredAuctions = [...this.auctions]; // mostrar todas las subastas al inicio
+      this.filteredAuctions = [...this.auctions];
+      // mostrar todas las subastas al inicio
     });
   }
 }
