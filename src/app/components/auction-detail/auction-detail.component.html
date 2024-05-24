@@ -11,9 +11,10 @@
     <div class="card mb-2" *ngIf="auction">
       <div class="row mt-4">
         <div class="col-md-6">
-          <div class="d-flex justify-content-center">
-            <img *ngIf="imageUrl" [src]="imageUrl" alt="ItemImg" class="img-fluid" alt="Auction Item Image">
-          </div> 
+        <div class="d-flex justify-content-center">
+          <img *ngIf="auction.img !== ''" [src]="auction.img" alt="ItemImg" class="rounded card-image">
+          <img *ngIf="auction.img === ''" src="https://www.rallis.com/Upload/Images/thumbnail/Product-inside.png" alt="ItemImg" class="rounded card-image">
+        </div> 
         </div>
         <div class="col-md-6">
           <h1>{{ auction.objectName }}</h1>

@@ -1,89 +1,259 @@
-import { Component, ElementRef, Renderer2 } from '@angular/core';
-import { SessionGuard } from 'src/app/guards/session.guard';
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ImageService } from 'src/app/services/api/image.service';
+import { AuctionService } from 'src/app/services/api/auction.service';
+import { RelationsAuctionsService } from 'src/app/services/api/relations-auctions.service';
+import { Router, ActivatedRoute } from '@angular/router';
+
+
+interface Auction {
+  objectName: string;
+  description: string;
+  categories: string[];
+  startDate: string;
+  endDate: string;
+  minBid: number;
+  minBidIncrement: number;
+  img: File | null;
+}
 
 @Component({
-  selector: 'app-auction-creator',
+  selector: 'auction-creator',
   templateUrl: './auction-creator.component.html',
   styleUrls: ['./auction-creator.component.scss'],
-  providers: [SessionGuard]
 })
 export class AuctionCreatorComponent {
-  imageSrc: HTMLImageElement | ArrayBuffer | null = null; // Property for holding image source
-  imageName: string | null = null; // Property for holding image name
+  @ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement> | undefined;
+  public auction: Auction = {
+    objectName: '',
+    description: '',
+    categories: [],
+    startDate: '',
+    endDate: '',
+    minBid: 0,
+    minBidIncrement: 0,
+    img: null,
+  };
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef) {}
+  private userId: number = parseInt(localStorage.getItem('userId')!)
+  public categories: string[] = [
+    'Libros',
+    'Pinturas',
+    'Esculturas',
+    'Arte',
+    'Antiguedades',
+    'Telefonos',
+    'Tablets',
+    'Computadoras',
+    'DispositivosElectronicos',
+    'VideojuegosyConsolas',
+    'RopaparaMujeres',
+    'RopaparaHombres',
+    'ZapatosyCalzado',
+    'BolsosyCarteras',
+    'Muebles',
+    'Electrodomesticos',
+    'DecoracióndeCasas',
+    'HerramientasdeJardineria',
+    'Anillos',
+    'Collares',
+    'Pulseras',
+    'Relojes',
+    'Automoviles',
+    'Motocicletas',
+    'PartesyAccesorios',
+    'VehiculosRecreacionales',
+    'JuguetesEducativos',
+    'FigurasdeAccion',
+    'Monedas',
+    'Sellos',
+    'ArticulosdeColeccion',
+    'EquipodeEjercicio',
+    'ArticulosDeportivos',
+    'CampamentoyAventuras',
+    'EquipamientoparaDeportesAcuaticos',
+    'CDyVinilos',
+    'InstrumentosMusicales',
+    'ProduccionMusical',
+    'HerramientasManuales',
+    'EquipamientoIndustrial',
+    'MaterialdeConstruccion',
+    'EquipamientoDeSeguridad'
+  ]
+  public selectedCategories: { [key: string]: boolean } = {};
 
-  readURL(input: HTMLInputElement) {
-    if (input.files && input.files[0]) {
-      const reader: FileReader = new FileReader();
-  
-      reader.onload = (e: any) => {
-        this.renderer.addClass(
-          this.elementRef.nativeElement.querySelector('.image-upload-wrap'),
-          'd-none'
-        );
+  public imageSrc: string | ArrayBuffer | null = null;
 
-        if (typeof e.target.result === 'string') {
-          this.imageSrc = new Image();
-          this.imageSrc.src = e.target.result;
-        } else {
-          this.imageSrc = e.target.result;
-        }
+  constructor(
+    private http: HttpClient,
+    private imageService: ImageService,
+    private auctionService: AuctionService,
+    private relationsAuctionsService: RelationsAuctionsService,
+    private router: Router,
+  ) {}
 
-        this.renderer.setAttribute(
-          this.elementRef.nativeElement.querySelector('.file-upload-image'),
-          'src',
-          (this.imageSrc as HTMLImageElement).src ?? ''
-        );
-        this.renderer.removeClass(
-          this.elementRef.nativeElement.querySelector('.file-upload-content'),
-          'd-none'
-        );
-        this.imageName = input.files?.[0]?.name ?? ''; // Set image name
+  getCurrentDateTime(): string {
+    return new Date().toISOString().slice(0, 16);
+
+    // Retorna la fecha y hora actual en formato 'YYYY-MM-DDTHH:MM'
+  }
+  isEndDateValid(): boolean {
+    const selectedDate = new Date(this.auction.endDate);
+    const currentDate = new Date();
+    return selectedDate >= currentDate;
+  }
+
+  isValidNumber(): boolean { 
+    return this.auction.minBid >= 0 && this.auction.minBidIncrement >= 0
+  }
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.setDropAreaStyle(true);
+  }
+
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.setDropAreaStyle(false);
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.setDropAreaStyle(false);
+
+    const files = event.dataTransfer?.files;
+    if (files && files.length > 0) {
+      this.loadFile(files[0]);
+    }
+  }
+
+  onClick() {
+    this.fileInput?.nativeElement.click();
+  }
+
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.loadFile(file);
+    }
+  }
+
+  loadFile(file: File) {
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imageSrc = reader.result;
+        this.auction.img = file;
       };
-  
-      reader.readAsDataURL(input.files[0]);
+      reader.readAsDataURL(file);
+      this.hideDropArea();
     } else {
-      this.removeUpload();
-    }
-  }
-  
-  removeUpload() {
-    const fileUploadInput: HTMLElement | null = this.elementRef.nativeElement.querySelector('.file-upload-input');
-    if (fileUploadInput) {
-      fileUploadInput.replaceWith(fileUploadInput.cloneNode(true));
-      this.renderer.addClass(
-        this.elementRef.nativeElement.querySelector('.file-upload-content'),
-        'd-none'
-      );
-      this.renderer.removeClass(
-        this.elementRef.nativeElement.querySelector('.image-upload-wrap'),
-        'd-none'
-      );
-      this.imageSrc = null; // Clear image source
-      this.imageName = null; // Clear image name
+      alert('Por favor, carga solo imágenes');
     }
   }
 
-  triggerFileInput() {
-    this.elementRef.nativeElement.querySelector('.file-upload-input')?.click();
-  }
+  onSubmit() {
+    this.auction.categories = Object.keys(this.selectedCategories).filter(
+      (category) => this.selectedCategories[category]
+    );
 
-  ngOnInit() {
-    this.elementRef.nativeElement.querySelector('.image-upload-wrap')
-      .addEventListener('dragover', () => {
-        this.renderer.addClass(
-          this.elementRef.nativeElement.querySelector('.image-upload-wrap'),
-          'image-dropping'
-        );
+    let imageUrl: string = ''
+    
+    const {
+      objectName,
+      description,
+      categories,
+      startDate,
+      endDate,
+      minBid,
+      minBidIncrement,
+    } = this.auction;
+
+    if (this.auction.img !== null) {
+      this.imageService.saveImage(this.auction.img).subscribe({
+        next: (response) => {
+          imageUrl = response.imageUrl;
+          this.auctionService
+          .addAuction(
+            objectName,
+            description,
+            categories.join(','),
+            startDate,
+            endDate,
+            imageUrl,
+            minBid,
+            minBidIncrement
+          )
+          .subscribe({
+            next: (response:any) => {
+              let auctionId = response.auctionId;
+              this.relationsAuctionsService.addAuctionRelation(response.auctionId, this.userId, true, minBid).subscribe({
+                next: (response) => {
+                  console.log('Relación creada con éxito:', response);
+                  this.router.navigate(['/auction-details', auctionId]);
+
+                }
+              })
+            },
+            error: (error) => {
+              console.error('Error al crear la subasta:', error);
+            },
+          });
+          
+        },
+        error: (error) => {
+          console.error('Error al subir la imagen:', error);
+        },
       });
+      return;
+    }
+    
+    this.auctionService
+          .addAuction(
+            objectName,
+            description,
+            categories.join(','),
+            startDate,
+            endDate,
+            imageUrl,
+            minBid,
+            minBidIncrement
+          )
+          .subscribe({
+            next: (response:any) => {
+              let auctionId = response.auctionId;
+              this.relationsAuctionsService.addAuctionRelation(response.auctionId, this.userId, true, minBid).subscribe({
+                next: (response) => {
+                  this.router.navigate(['/auction-details', auctionId]);
 
-    this.elementRef.nativeElement.querySelector('.image-upload-wrap')
-      .addEventListener('dragleave', () => {
-        this.renderer.removeClass(
-          this.elementRef.nativeElement.querySelector('.image-upload-wrap'),
-          'image-dropping'
-        );
-    });
+                }
+              })
+            },
+            error: (error) => {
+              console.error('Error al crear la subasta:', error);
+            },
+          });
+  
+   
+  }
+
+  private setDropAreaStyle(isDragOver: boolean) {
+    const dropArea = document.querySelector('.file-drop');
+    if (dropArea) {
+      if (isDragOver) {
+        dropArea.classList.add('drag-over');
+      } else {
+        dropArea.classList.remove('drag-over');
+      }
+    }
+  }
+  private hideDropArea() {
+    const dropArea = document.querySelector('.file-drop');
+    if (dropArea) {
+      dropArea.classList.add('d-none');
+    }
   }
 }

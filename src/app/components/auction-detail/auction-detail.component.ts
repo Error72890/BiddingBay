@@ -49,9 +49,6 @@ export class AuctionDetailComponent implements OnInit {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
-    if (this.imageUrl) {
-      URL.revokeObjectURL(this.imageUrl); // Limpiar la URL para evitar fugas de memoria
-    }
   }
 
   getAuctionDetails() {
@@ -68,7 +65,6 @@ export class AuctionDetailComponent implements OnInit {
         this.intervalId = setInterval(() => {
           this.updateRemainingTime();
         }, 1000);
-        this.createImage();
       },
       error: (error) => {
         this.loading = false;
@@ -121,7 +117,6 @@ export class AuctionDetailComponent implements OnInit {
     }
     return `${days}d ${hours}h ${minutes}m ${seconds}s`;
   }
-
   createImage() {
     if (this.auction.img && this.auction.img.data) {
       const byteArray = new Uint8Array(this.auction.img.data);

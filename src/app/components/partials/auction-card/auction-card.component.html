@@ -3,7 +3,9 @@
         <i class="material-icons mr-2"><b>{{auction.objectName}}</b></i>
       </h6>
       <div class="d-flex justify-content-center">
-        <img *ngIf="imageUrl" [src]="imageUrl" alt="ItemImg" class="rounded object-fit-cover" width="200px" height="200px">
+        <img *ngIf="auction.img !== ''" [src]="auction.img" alt="ItemImg" class="rounded card-image" width="200px" height="200px">
+        <img *ngIf="auction.img === ''" src="https://www.rallis.com/Upload/Images/thumbnail/Product-inside.png" alt="ItemImg" class="rounded card-image" width="200px" height="200px">
+
       </div>
       <div class="my-2">Apuesta más alta: <small>${{maxBid}}</small></div>
       Tiempo restante: <small>{{remainingTime}}</small>
