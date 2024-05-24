@@ -1,4 +1,4 @@
-<div class="page-content">
+<div class="page-content mt-4">
   <div *ngIf="loading">Cargando detalles de la subasta...</div>
 
   <div *ngIf="error">
@@ -7,19 +7,27 @@
   </div>
 
   <div *ngIf="!loading && !error">
-    <h2 class="h3 mt-4">Detalles de la subasta</h2>
-    <div class="card " *ngIf="auction">
-      <div class="row">
+    <h2 class="h3">Detalles de la subasta</h2>
+    <div class="card mb-2" *ngIf="auction">
+      <div class="row mt-4">
         <div class="col-md-6">
+        <div class="d-flex justify-content-center">
           <img *ngIf="auction.img !== ''" [src]="auction.img" alt="ItemImg" class="rounded card-image">
           <img *ngIf="auction.img === ''" src="https://www.rallis.com/Upload/Images/thumbnail/Product-inside.png" alt="ItemImg" class="rounded card-image">
+        </div> 
         </div>
         <div class="col-md-6">
           <h1>{{ auction.objectName }}</h1>
           <p class="text-muted">Categorías: {{ auction.categories }}</p>
-          <h3 class="text-primary">{{ auction.highestBid }}</h3>
-          <p>Ends in: <span id="countdown">{{remainingTime}}</span></p>
-          <button class="btn btn-primary btn-lg">Place Bid</button>
+          <div *ngIf="finished">
+            <p><strong>--- Finalizada ---</strong></p>
+            <h3 class="text-primary">Comprada por: ${{ maxBid }}</h3>
+          </div>
+          <div *ngIf="!finished">
+            <h3 class="text-primary">Mínimo requerido: ${{ minBidRequired }}</h3>
+            <p>Finaliza en: <span id="countdown">{{remainingTime}}</span></p>
+            <button class="btn btn-primary btn-lg mt-1">Participar</button>
+          </div>
           <p class="mt-4"><strong>Description:</strong></p>
           <p>{{ auction.description }}</p>
         </div>
@@ -27,24 +35,17 @@
 
       <div class="row my-5">
         <div class="col-12">
-          <table class="table table-striped">
+          <table class="table table-striped mx-4">
             <thead>
               <tr>
-                <th scope="col">Bidder</th>
-                <th scope="col">Bid Amount</th>
-                <th scope="col">Date</th>
+                <th scope="col">Licitador</th>
+                <th scope="col">Monto de oferta</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>John Doe</td>
-                <td>$100</td>
-                <td>2024-05-22 14:23</td>
-              </tr>
-              <tr>
-                <td>Jane Smith</td>
-                <td>$110</td>
-                <td>2024-05-22 15:45</td>
+              <tr *ngFor="let bid of bidders">
+                <td>{{bid['bidderName']}}</td>
+                <td>{{bid['bidAmt']}}</td>
               </tr>
             </tbody>
           </table>

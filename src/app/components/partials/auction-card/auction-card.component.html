@@ -7,7 +7,7 @@
         <img *ngIf="auction.img === ''" src="https://www.rallis.com/Upload/Images/thumbnail/Product-inside.png" alt="ItemImg" class="rounded card-image" width="200px" height="200px">
 
       </div>
-      <div class="my-2">Apuesta más alta: <small>100</small></div>
+      <div class="my-2">Apuesta más alta: <small>${{maxBid}}</small></div>
       Tiempo restante: <small>{{remainingTime}}</small>
       <div class="progress mb-3" style="height: 5px">
         <div class="progress-bar bg-primary" role="progressbar" [style.width.%]="progress" aria-valuenow="6"

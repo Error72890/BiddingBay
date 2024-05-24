@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ export class RelationsAuctionsService {
 
   addAuctionRelation(auctionId: number, userId: number, isCreator: boolean, bidAmt: number) {
     const headers = new HttpHeaders({
-      Authorization: this.TOKEN,
+      'Authorization': this.TOKEN,
     });
 
     const body = { auctionId, userId, isCreator, bidAmt };
@@ -20,27 +21,25 @@ export class RelationsAuctionsService {
     return this.http.post(`${this.API_URL}/add`, body, { headers });
   }
 
-  getCommentRelationList() {
+  getAuctionRelationList() : Observable<any> {
     const headers = new HttpHeaders({
-      Authorization: this.TOKEN,
+      'Authorization': this.TOKEN,
     });
 
     return this.http.get(`${this.API_URL}/get-all`, { headers });
   }
 
-  getAuctionRelationById(relationAuctionId: number) {
+  getAuctionRelationsById(relationAuctionId: number) : Observable<any>  {
     const headers = new HttpHeaders({
-      Authorization: this.TOKEN,
+      'Authorization': this.TOKEN,
     });
 
-    return this.http.get(`${this.API_URL}/get/${relationAuctionId}`, {
-      headers,
-    });
+    return this.http.get(`${this.API_URL}/get/${relationAuctionId}`, { headers });
   }
 
-  getAuctionRelationByAuctionId(auctionId: number) {
+  getAuctionRelationsByAuctionId(auctionId: number) : Observable<any> {
     const headers = new HttpHeaders({
-      Authorization: this.TOKEN,
+      'Authorization': this.TOKEN,
     });
 
     return this.http.get(`${this.API_URL}/get/auction/${auctionId}`, {
@@ -48,9 +47,9 @@ export class RelationsAuctionsService {
     });
   }
 
-  getAuctionRelationByUserId(userId: number) {
+  getAuctionRelationsByUserId(userId: number) : Observable<any> {
     const headers = new HttpHeaders({
-      Authorization: this.TOKEN,
+      'Authorization': this.TOKEN,
     });
 
     return this.http.get(`${this.API_URL}/get/user/${userId}`, { headers });
@@ -58,23 +57,19 @@ export class RelationsAuctionsService {
 
   editAuctionRelation( relationAuctionId: number, auctionId: number, userId: number, isCreator: boolean, bidAmt: number ) {
     const headers = new HttpHeaders({
-      Authorization: this.TOKEN,
+      'Authorization': this.TOKEN,
     });
 
     const body = { relationAuctionId, auctionId, userId, isCreator, bidAmt };
 
-    return this.http.put(`${this.API_URL}/edit/${relationAuctionId}`, body, {
-      headers,
-    });
+    return this.http.put(`${this.API_URL}/edit/${relationAuctionId}`, body, { headers });
   }
 
   deleteAuctionRelation(relationId: number) {
     const headers = new HttpHeaders({
-      Authorization: this.TOKEN,
+      'Authorization': this.TOKEN,
     });
 
-    return this.http.delete(`${this.API_URL}/delete/${relationId}`, {
-      headers,
-    });
+    return this.http.delete(`${this.API_URL}/delete/${relationId}`, { headers });
   }
 }

@@ -27,7 +27,6 @@ export class UserService {
   }
 
   getUsersList() {
-
     const headers = new HttpHeaders({
       'Authorization': this.TOKEN,
     });
